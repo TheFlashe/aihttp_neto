@@ -11,7 +11,7 @@ POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 POSTGRES_DB = os.getenv("POSTGRES_DB")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT")
-DSN = f"postgresql+asyncpg://POSTGRES_USER:POSTGRES_PASSWORD" f"POSTGRES_HOST:POSTGRES_PORT/POSTGRES_DB"
+DSN = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}" f"{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 engine = create_async_engine(DSN)
 AsyncSession = async_sessionmaker(engine, expire_on_commit=False)
 
@@ -31,7 +31,7 @@ class Desk(Base):
     create_descr_time: MappedColumn[datetime.datetime] = mapped_column(
         DateTime, server_default=func.now()
     )
-    owner: MappedColumn[str] = mapped_column(String(20), unique=True)
+    owner: MappedColumn[str] = mapped_column(String(20))
 
     @property
     def dict(self):
